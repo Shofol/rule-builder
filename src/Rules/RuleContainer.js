@@ -41,7 +41,7 @@ const Rules = () => {
                 </div>
             </nav>
             <div className="tab-content" id="nav-tabContent" style={{ maxWidth: '500px' }}>
-                <div className="tab-pane fade show active card" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
+                <div className="tab-pane fade show active card" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab" style={{ minHeight: '88.5vh' }}>
                     <RuleForm updateRules={updateRules} />
                     {rules.length === 0 && <h5 className="py-5 bg-light font-weight-bold">No rules found</h5>}
                     {rules.length > 0 && <div className="accordion p-5" id="accordionFlushExample">
