@@ -7,6 +7,7 @@ import {
   Link
 } from "react-router-dom";
 import RuleContainer from './Rules/RuleContainer';
+import Pipeline from './Pipeline/Pipeline';
 
 function App() {
   return (
@@ -28,7 +29,7 @@ function App() {
                     <Link className="nav-link" to="/rule">Rules</Link>
                   </li>
                   <li className="nav-item">
-                    <Link className="nav-link" to="/users">Pipeline</Link>
+                    <Link className="nav-link" to="/pipeline">Pipeline</Link>
                   </li>
 
                 </ul>
@@ -45,9 +46,9 @@ function App() {
             <Route path="/rule">
               <RuleContainer />
             </Route>
-            {/* <Route path="/">
-              <Home />
-            </Route> */}
+            <Route path="/pipeline">
+              <Pipeline />
+            </Route>
           </Switch>
         </div>
       </Router>

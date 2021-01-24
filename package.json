@@ -8,6 +8,7 @@
     "@testing-library/user-event": "^12.6.2",
     "formik": "^2.2.6",
     "react": "^17.0.1",
+    "react-accessible-accordion": "^3.3.3",
     "react-dom": "^17.0.1",
     "react-flow-renderer": "^8.5.0",
     "react-router-dom": "^5.2.0",

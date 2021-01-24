@@ -118,7 +118,7 @@ const RulebookForm = ({ updateRuleBooks, showRules, showRuleBooks, ruleBooksFrom
                         {errors.when && touched.when && errors.when} */}
 
                         <button type="submit" className="btn btn-success px-5 mt-4 ms-auto" disabled={isSubmitting}>
-                            <span>{!selectedRuleBook ? 'Create' : 'Edit'}</span> Rulebook
+                            <span>{!selectedRuleBook ? 'Create' : 'Update'}</span> Rulebook
                         </button>
                     </form>
                 )}</Formik>}
