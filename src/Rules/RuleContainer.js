@@ -69,6 +69,20 @@ const Rules = () => {
         setRuleBooks(tempRuleBooks);
     }
 
+    const handleRuleSearch = (e) => {
+        const tempRules = JSON.parse(localStorage.getItem('rules'));
+        setTimeout(() => {
+            setRules(tempRules.filter(rule => { return (rule.name.includes(e.target.value) || rule.description.includes(e.target.value)) }))
+        }, 100);
+    }
+
+    const handleRuleBookSearch = (e) => {
+        const tempRuleBooks = JSON.parse(localStorage.getItem('ruleBooks'));
+        setTimeout(() => {
+            setRuleBooks(tempRuleBooks.filter(rule => { return (rule.name.includes(e.target.value) || rule.description.includes(e.target.value)) }))
+        }, 100);
+    }
+
 
     return (
         <div className="row">
@@ -82,8 +96,11 @@ const Rules = () => {
                 <div className="tab-content" id="nav-tabContent" >
                     <div className="tab-pane fade show active card" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab" style={{ minHeight: '88.5vh' }}>
                         <RuleForm updateRules={updateRules} />
+                        <div className="px-5 pt-4">
+                            <input type="text" className="form-control" placeholder="Search a rule" onChange={handleRuleSearch}></input>
+                        </div>
                         {rules.length === 0 && <h5 className="py-5 bg-light font-weight-bold">No rules found</h5>}
-                        {rules.length > 0 && <div className="accordion p-5" id="accordionFlushExample">
+                        {rules.length > 0 && <div className="p-5" id="accordionFlushExample">
                             {rules.map(
                                 (rule, index) => {
                                     return <div key={index} className="accordion-item"
@@ -114,11 +131,12 @@ const Rules = () => {
                         </div>}
                     </div>
                     <div className="tab-pane fade card p-5" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab" style={{ minHeight: '88.5vh' }}>
-                        <input type="text" className="form-control" placeholder="Search a rulebook"></input>
                         {ruleBooks.length === 0 && <h5 className="py-5 bg-light font-weight-bold mt-4">No rulebooks found</h5>}
                         <button className="btn btn-primary mt-4" onClick={() => setShowRuleBookForm(true)}>Create a rulebook</button>
+                        {/* accordion */}
+                        <input type="text" className="form-control mt-5" placeholder="Search a rulebook" onChange={handleRuleBookSearch}></input>
 
-                        {ruleBooks.length > 0 && <div className="accordion py-5" id="ruleBookAccordion">
+                        {ruleBooks.length > 0 && <div className="pb-5 pt-4" id="ruleBookAccordion">
                             {ruleBooks.map(
                                 (ruleBook, index) => {
                                     return <div key={index} className="accordion-item">
@@ -131,8 +149,8 @@ const Rules = () => {
                                             <div className="accordion-body">
                                                 Description: {ruleBook.description}
                                                 <div>
-                                                    <button className="btn btn-sm btn-primary mr-1" onClick={() => handleRuleBookEdit(ruleBook)}>Edit</button>
-                                                    <button className="btn btn-sm btn-secondary ml-1" onClick={() => removeRuleBook(index)}>Delete</button>
+                                                    <button className="btn btn-sm btn-primary px-3 mt-2 me-1" onClick={() => handleRuleBookEdit(ruleBook)}>Edit</button>
+                                                    <button className="btn btn-sm btn-secondary px-3 mt-2 ms-1" onClick={() => removeRuleBook(index)}>Delete</button>
                                                 </div>
                                             </div>
                                         </div>
