@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react'
 import { Formik, Field } from 'formik';
 
-const RulebookForm = ({ updateRuleBooks, showRules, showRuleBooks, ruleBooksFromContainer, selectedRule }) => {
+const RulebookForm = ({ updateRuleBooks, showRules, showRuleBooks, ruleBooksFromContainer, selectedRule, selectedRuleBook }) => {
 
     const [ruleBooks, setRuleBooks] = useState(ruleBooksFromContainer);
     const [showRuleForm, setShowRuleForm] = useState(false);
     const [currentRuleBook, setCurrentRuleBook] = useState(null)
-    const [currentRuleBookRules, setCurrentRuleBookRules] = useState([])
+    const [currentRuleBookRules, setCurrentRuleBookRules] = useState(selectedRuleBook ? selectedRuleBook.rules : [])
 
     useEffect(() => {
         localStorage.removeItem('ruleBooks')
@@ -29,11 +29,19 @@ const RulebookForm = ({ updateRuleBooks, showRules, showRuleBooks, ruleBooksFrom
     }
 
     const saveRuleBook = () => {
+        if (selectedRuleBook) {
+            const tempRuleBooks = [...ruleBooks];
+            const updatedRuleBook = currentRuleBook;
+            updatedRuleBook.rules = currentRuleBookRules;
+            Object.assign(tempRuleBooks.filter(ruleBook => ruleBook.id === selectedRuleBook.id)[0], updatedRuleBook);
+            setRuleBooks(tempRuleBooks);
+        } else {
+            const newRuleBook = currentRuleBook;
+            newRuleBook.id = ruleBooks.length === 0 ? 1 : ruleBooks.length + 1;
+            newRuleBook.rules = currentRuleBookRules;
+            setRuleBooks([...ruleBooks, newRuleBook]);
+        }
 
-        const newRuleBook = currentRuleBook;
-        newRuleBook.rules = currentRuleBookRules;
-
-        setRuleBooks([...ruleBooks, newRuleBook]);
         showRuleBooks();
     }
 
@@ -42,8 +50,8 @@ const RulebookForm = ({ updateRuleBooks, showRules, showRuleBooks, ruleBooksFrom
             <h3 className="text-start mb-4">New Rulebook</h3>
             {!showRuleForm && <Formik
                 initialValues={{
-                    name: '',
-                    description: '',
+                    name: selectedRuleBook ? selectedRuleBook.name : '',
+                    description: selectedRuleBook ? selectedRuleBook.description : '',
                     // when: '',
                     // effects: ['']
                 }}
@@ -110,7 +118,7 @@ const RulebookForm = ({ updateRuleBooks, showRules, showRuleBooks, ruleBooksFrom
                         {errors.when && touched.when && errors.when} */}
 
                         <button type="submit" className="btn btn-success px-5 mt-4 ms-auto" disabled={isSubmitting}>
-                            Create Rulebook
+                            <span>{!selectedRuleBook ? 'Create' : 'Edit'}</span> Rulebook
                         </button>
                     </form>
                 )}</Formik>}

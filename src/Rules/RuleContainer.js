@@ -12,6 +12,7 @@ const Rules = () => {
 
     const [showRuleBookForm, setShowRuleBookForm] = useState(false);
     const [selectedRule, setSelectedRule] = useState(null)
+    const [selectedRuleBook, setSelectedRuleBook] = useState(null)
 
     useEffect(() => {
         updateRules();
@@ -39,8 +40,6 @@ const Rules = () => {
         }, 100);
     }
 
-
-
     useEffect(() => {
         console.log(rules);
         // localStorage.removeItem('rules')
@@ -55,6 +54,19 @@ const Rules = () => {
         ev.preventDefault();
         // var data = ev.dataTransfer.getData("text");
         setSelectedRule(ev.dataTransfer.getData("rule"))
+    }
+
+    const handleRuleBookEdit = (ruleBook) => {
+        setSelectedRuleBook(ruleBook);
+        setShowRuleBookForm(true);
+    }
+
+    const removeRuleBook = (index) => {
+        const tempRuleBooks = [...ruleBooks];
+        tempRuleBooks.splice(index, 1);
+        localStorage.removeItem('ruleBooks')
+        localStorage.setItem('ruleBooks', JSON.stringify(tempRuleBooks));
+        setRuleBooks(tempRuleBooks);
     }
 
 
@@ -118,6 +130,10 @@ const Rules = () => {
                                         <div id={`flush-collapse${index}`} className="accordion-collapse collapse" aria-labelledby="flush-headingOne" data-bs-parent="#ruleBookAccordion">
                                             <div className="accordion-body">
                                                 Description: {ruleBook.description}
+                                                <div>
+                                                    <button className="btn btn-sm btn-primary mr-1" onClick={() => handleRuleBookEdit(ruleBook)}>Edit</button>
+                                                    <button className="btn btn-sm btn-secondary ml-1" onClick={() => removeRuleBook(index)}>Delete</button>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -132,6 +148,7 @@ const Rules = () => {
                     <div >
                         <RulebookForm updateRuleBooks={() => { updateRuleBooks() }}
                             selectedRule={selectedRule}
+                            selectedRuleBook={selectedRuleBook}
                             showRuleForm={showRuleForm} ruleBooksFromContainer={ruleBooks}
                             showRules={() => { ruleTabRef.current.click() }}
                             showRuleBooks={() => {
