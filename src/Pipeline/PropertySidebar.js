@@ -1,16 +1,40 @@
 import React, { useState, useEffect } from 'react';
 
 export default ({ propList, updateProp, download }) => {
+
+
+    const [ruleBooks, setRuleBooks] = useState([]);
+    const [ruleBookValue, setRuleBookValue] = useState(undefined);
+
+    useEffect(() => {
+        updateRuleBooks();
+    }, []);
+
+    const updateRuleBooks = () => {
+        setTimeout(() => {
+            const ruleBooks = localStorage.getItem('ruleBooks');
+            if (ruleBooks) {
+                setRuleBooks(JSON.parse(ruleBooks));
+            }
+        }, 100);
+    }
+
     const [updatedPropList, setUpdatedPropList] = useState(propList);
-    const handleChange = (value, label) => {
+    const handleChange = (value, label, showTextArea = false) => {
         const tempPropList = [...propList];
         tempPropList.filter(prop => prop.label === label)[0].value = value;
         setUpdatedPropList(tempPropList);
+
+        if (showTextArea) {
+            const newValue = JSON.stringify(ruleBooks.filter(ruleBook => ruleBook.name === value)[0]);
+            setRuleBookValue(newValue);
+        }
     }
 
     useEffect(() => {
         setUpdatedPropList(propList);
     }, [propList]);
+
 
     return (
         <aside className="dndflow" style={{ minWidth: '250px', position: 'relative' }}>
@@ -25,7 +49,7 @@ export default ({ propList, updateProp, download }) => {
                             </div>}
                             {prop.type === 'dropdown' && <div className="nodeProp">
                                 <label>{prop.label.toUpperCase()}</label>
-                                <select defaultValue={prop.value} onChange={(e) => handleChange(e.target.value, prop.label)}>
+                                <select defaultValue={prop.value} onChange={(e) => handleChange(e.target.value, prop.label, prop.showTextArea)}>
                                     {
                                         prop.options.map(
                                             (option, opInd) => {
@@ -44,9 +68,9 @@ export default ({ propList, updateProp, download }) => {
                                 <label>{prop.label.toUpperCase()}</label>
                                 <input type="file" defaultValue={''} onChange={(e) => handleChange(e.target.value, prop.label)} />
                             </div>}
-                            {prop.type === 'textarea' && <div className="nodeProp">
+                            {prop.showTextArea === true && <div className="nodeProp">
                                 <label>{prop.label.toUpperCase()}</label>
-                                <textarea disabled={prop.disabled} value={prop.value} onChange={(e) => handleChange(e.target.value, prop.label)} />
+                                <textarea disabled={true} value={ruleBookValue} onChange={(e) => handleChange(e.target.value, prop.label)} />
                             </div>}
                         </div>
                     }

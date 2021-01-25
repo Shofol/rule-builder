@@ -57,9 +57,9 @@
 }
 
 .dndflow .dndnode {
-  height: 20px;
+  height: 30px;
   padding: 4px;
-  border: 1px solid #1a192b;
+  border: 1px solid #7a7a7a;
   border-radius: 2px;
   /* margin-bottom: 10px; */
   display: flex;

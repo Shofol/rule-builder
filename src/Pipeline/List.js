@@ -12,7 +12,7 @@ const List = ({ renderPipeline }) => {
     }, []);
 
     useEffect(() => {
-        // console.log(pipelineList)
+        console.log(pipelineList)
     }, [pipelineList]);
 
 

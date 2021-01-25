@@ -8,6 +8,7 @@ import {
 } from "react-router-dom";
 import RuleContainer from './Rules/RuleContainer';
 import Pipeline from './Pipeline/Pipeline';
+import Dashboard from './pages/Dashboard';
 
 function App() {
   return (
@@ -16,7 +17,7 @@ function App() {
         <div>
           <nav className="navbar navbar-expand-lg navbar-light bg-light">
             <div className="container-fluid">
-              <a className="navbar-brand" href="#">Rule Builder</a>
+              <Link className="navbar-brand" to="/">Rule Builder</Link>
               <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                 <span className="navbar-toggler-icon"></span>
               </button>
@@ -40,14 +41,14 @@ function App() {
           {/* A <Switch> looks through its children <Route>s and
             renders the first one that matches the current URL. */}
           <Switch>
-            {/* <Route path="/about">
-              <About />
-            </Route> */}
             <Route path="/rule">
               <RuleContainer />
             </Route>
             <Route path="/pipeline">
               <Pipeline />
+            </Route>
+            <Route exact path="/">
+              <Dashboard />
             </Route>
           </Switch>
         </div>

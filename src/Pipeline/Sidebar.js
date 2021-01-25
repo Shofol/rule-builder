@@ -89,6 +89,20 @@ export default () => {
                     <AccordionItemPanel>
                         <div className="dndnode"
                             onDragStart={(event) => onDragStart(event, {
+                                type: 'default', label: 'Rulebook',
+                                props: [
+                                    { label: 'Label', type: 'text', value: undefined },
+                                    { label: 'Address', type: 'text', value: undefined },
+                                    { label: 'Rulebooks', type: 'dropdown', showTextArea: true, value: null, options: ['Select a rulebook', ...ruleBooks.map(ruleBook => ruleBook.name)] },
+                                    // { label: 'Rulebooks JSON', type: 'textarea', disabled: true }
+                                ]
+                            })} draggable>
+                            Rulebook
+                        </div>
+                    </AccordionItemPanel>
+                    <AccordionItemPanel>
+                        <div className="dndnode"
+                            onDragStart={(event) => onDragStart(event, {
                                 type: 'default', label: 'Aggregete',
                                 props: [{ label: 'Cast Type', type: 'dropdown', value: null, options: ['string', 'integer', 'double', 'boolean'] }]
                             })} draggable>
@@ -106,9 +120,15 @@ export default () => {
                             Reservoir Sampling
                         </div>
                     </AccordionItemPanel>
-
-
                 </AccordionItem>
+                {/* <AccordionItem>
+                    <AccordionItemHeading>
+                        <AccordionItemButton>
+                            Rulebook
+                        </AccordionItemButton>
+                    </AccordionItemHeading>
+              
+                </AccordionItem> */}
             </Accordion>
 
             <Accordion allowZeroExpanded>
@@ -147,33 +167,6 @@ export default () => {
                     </AccordionItemPanel>
                 </AccordionItem>
             </Accordion>
-
-
-            <Accordion allowZeroExpanded>
-                <AccordionItem>
-                    <AccordionItemHeading>
-                        <AccordionItemButton>
-                            Rulebook
-                        </AccordionItemButton>
-                    </AccordionItemHeading>
-                    <AccordionItemPanel>
-                        <div className="dndnode"
-                            onDragStart={(event) => onDragStart(event, {
-                                type: 'default', label: 'Rulebook',
-                                props: [
-                                    { label: 'Label', type: 'text', value: undefined },
-                                    { label: 'Address', type: 'text', value: undefined },
-                                    { label: 'Rulebooks', type: 'dropdown', value: null, options: ruleBooks.map(ruleBook => ruleBook.name) },
-                                    { label: 'Rulebooks JSON', type: 'textarea', disabled: true, value: JSON.stringify(ruleBooks) }
-                                ]
-                            })} draggable>
-                            Rulebook
-                        </div>
-                    </AccordionItemPanel>
-                </AccordionItem>
-            </Accordion>
-
-
 
         </aside>
 

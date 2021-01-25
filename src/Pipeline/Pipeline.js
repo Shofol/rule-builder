@@ -1,5 +1,7 @@
 import React, { useState, useRef, useEffect, Fragment } from 'react';
-import ReactFlow, { ReactFlowProvider, addEdge, removeElements, Controls, Background } from 'react-flow-renderer';
+import ReactFlow, {
+  ReactFlowProvider, addEdge, removeElements, Controls, Background, useZoomPanHelper
+} from 'react-flow-renderer';
 
 import Sidebar from './Sidebar';
 import PropertySidebar from './PropertySidebar';
@@ -15,6 +17,8 @@ let id = 0;
 const getId = () => `pipelineNode_${id++}`;
 
 const Pipeline = () => {
+  // const { transform } = useZoomPanHelper();
+
   const reactFlowWrapper = useRef(null);
   const [reactFlowInstance, setReactFlowInstance] = useState(null);
   const [elements, setElements] = useState(initialElements);
@@ -60,6 +64,7 @@ const Pipeline = () => {
       id: elements.length > 0 ? `pipelineNode_${elements.length}` : getId(),
       type,
       position,
+      style: { border: '1px solid #777', padding: 10 },
       data: { label: `${label} node`, props: props, properties: [] },
     };
     setElements((es) => es.concat(newNode));
@@ -145,17 +150,26 @@ const Pipeline = () => {
 
   const savePipeLine = () => {
     let existingList = localStorage.getItem('pipelineList');
+    let flow = null;
+    if (reactFlowInstance) {
+      flow = reactFlowInstance.toObject();
+    }
     if (existingList) {
       if (selectedPipeline) {
         const tempList = [...JSON.parse(existingList)];
-        tempList.filter(list => list.id === selectedPipeline.id)[0].name = pipelineName;
-        tempList.filter(list => list.id === selectedPipeline.id)[0].elements = elements;
-        existingList = tempList;
+        const index = tempList.findIndex(list => list.id === selectedPipeline.id);
+        tempList.splice(index, 1);
+        tempList.splice(index, 0, { id: selectedPipeline.id, name: pipelineName, ...flow })
+
+        // const sourceNode = tempList.filter(list => list.id === selectedPipeline.id)[0];
+        // delete sourceNode.elements;
+        // tempList.filter(list => list.id === selectedPipeline.id)[0] = elements;
+        existingList = [...tempList];
       } else {
-        existingList = [...JSON.parse(existingList), { id: existingList.length + 1, name: pipelineName, elements: elements }];
+        existingList = [...JSON.parse(existingList), { id: existingList.length + 1, name: pipelineName, ...flow }];
       }
     } else {
-      existingList = [{ id: 1, name: pipelineName, elements: elements }];
+      existingList = [{ id: 1, name: pipelineName, ...flow }];
     }
 
     localStorage.removeItem('pipelineList');
@@ -179,7 +193,11 @@ const Pipeline = () => {
   const renderPipeline = (pipeline, i) => {
     setElements([]);
     setSelectedPipeline(pipeline);
-    setElements(pipeline.elements);
+
+    const [x = 0, y = 0] = pipeline.position;
+    setElements(pipeline.elements || []);
+    // transform({ x, y, zoom: pipeline.zoom || 0 });
+
     setPipelineName(pipeline.name ? pipeline.name : `Pipeline${i + 1}`);
     let existingListToExport = localStorage.getItem('pipelineListToExport');
     if (existingListToExport) {
