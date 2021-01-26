@@ -20,20 +20,28 @@ export default ({ propList, updateProp, download }) => {
     }
 
     const [updatedPropList, setUpdatedPropList] = useState(propList);
-    const handleChange = (value, label, showTextArea = false) => {
+    const handleChange = (value, label) => {
         const tempPropList = [...propList];
         tempPropList.filter(prop => prop.label === label)[0].value = value;
         setUpdatedPropList(tempPropList);
 
-        if (showTextArea) {
-            const newValue = JSON.stringify(ruleBooks.filter(ruleBook => ruleBook.name === value)[0]);
-            setRuleBookValue(newValue);
-        }
+        // if (showTextArea) {
+        //     const newValue = JSON.stringify(ruleBooks.filter(ruleBook => ruleBook.name === value)[0]);
+        //     setRuleBookValue(newValue);
+        // }
     }
 
     useEffect(() => {
         setUpdatedPropList(propList);
     }, [propList]);
+
+    useEffect(() => {
+        const value = updatedPropList.filter(el => el.showTextArea === true)[0].value;
+        if (value) {
+            const newValue = JSON.stringify(ruleBooks.filter(ruleBook => ruleBook.name === value)[0]);
+            setRuleBookValue(newValue);
+        }
+    }, [updatedPropList, ruleBooks]);
 
 
     return (
@@ -45,11 +53,11 @@ export default ({ propList, updateProp, download }) => {
                         return <div className="mx-3 text-start" key={index}>
                             {prop.type === 'text' && <div className="nodeProp">
                                 <label>{prop.label.toUpperCase()}</label>
-                                <input value={prop.value} placeholder={prop.label} onChange={(e) => handleChange(e.target.value, prop.label)}></input>
+                                <input defaultValue={prop.value} placeholder={prop.label} onChange={(e) => handleChange(e.target.value, prop.label)}></input>
                             </div>}
                             {prop.type === 'dropdown' && <div className="nodeProp">
                                 <label>{prop.label.toUpperCase()}</label>
-                                <select defaultValue={prop.value} onChange={(e) => handleChange(e.target.value, prop.label, prop.showTextArea)}>
+                                <select value={prop.value ? prop.value : ''} onChange={(e) => handleChange(e.target.value, prop.label)}>
                                     {
                                         prop.options.map(
                                             (option, opInd) => {
