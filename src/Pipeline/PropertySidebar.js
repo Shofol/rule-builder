@@ -36,10 +36,13 @@ export default ({ propList, updateProp, download }) => {
     }, [propList]);
 
     useEffect(() => {
-        const value = updatedPropList.filter(el => el.showTextArea === true)[0].value;
-        if (value) {
-            const newValue = JSON.stringify(ruleBooks.filter(ruleBook => ruleBook.name === value)[0]);
-            setRuleBookValue(newValue);
+        const selectedNode = updatedPropList.filter(el => el.showTextArea === true)[0];
+        if (selectedNode) {
+            const value = selectedNode.value
+            if (value) {
+                const newValue = JSON.stringify(ruleBooks.filter(ruleBook => ruleBook.name === value)[0]);
+                setRuleBookValue(newValue);
+            }
         }
     }, [updatedPropList, ruleBooks]);
 
