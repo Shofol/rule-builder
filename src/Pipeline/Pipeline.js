@@ -35,8 +35,10 @@ const Pipeline = () => {
     handleEdgeConnect(params);
   };
 
-  const onElementsRemove = (elementsToRemove) =>
+  const onElementsRemove = (elementsToRemove) => {
+    console.log(elementsToRemove);
     setElements((els) => removeElements(elementsToRemove, els));
+  }
 
   const onLoad = (_reactFlowInstance) =>
     setReactFlowInstance(_reactFlowInstance);
@@ -101,6 +103,8 @@ const Pipeline = () => {
         targetHandle: null
       }, els));
 
+    } else {
+      id = 0;
     }
 
   }, [elements]);
