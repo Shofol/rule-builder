@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { Formik, Field } from 'formik';
 
-const RulebookForm = ({ updateRuleBooks, showRules, showRuleBooks, ruleBooksFromContainer, selectedRule, selectedRuleBook }) => {
+const RulebookForm = ({ updateRuleBooks, showRules, showRuleBooks, ruleBooksFromContainer, selectedRule, selectedRuleBook, clearSelection }) => {
 
     const [ruleBooks, setRuleBooks] = useState(ruleBooksFromContainer);
     const [showRuleForm, setShowRuleForm] = useState(false);
@@ -16,8 +16,10 @@ const RulebookForm = ({ updateRuleBooks, showRules, showRuleBooks, ruleBooksFrom
 
     useEffect(() => {
         if (selectedRule) {
-            if (!(currentRuleBookRules.filter(rule => JSON.stringify(rule) === selectedRule).length > 0))
+            if (!(currentRuleBookRules.filter(rule => JSON.stringify(rule) === selectedRule).length > 0)) {
                 setCurrentRuleBookRules([...currentRuleBookRules, JSON.parse(selectedRule)]);
+            }
+            clearSelection();
         }
     }, [selectedRule]);
 

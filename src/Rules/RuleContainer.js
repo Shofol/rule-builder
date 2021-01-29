@@ -52,7 +52,6 @@ const Rules = () => {
 
     const drop = (ev) => {
         ev.preventDefault();
-        // var data = ev.dataTransfer.getData("text");
         setSelectedRule(ev.dataTransfer.getData("rule"))
     }
 
@@ -169,6 +168,7 @@ const Rules = () => {
                             selectedRuleBook={selectedRuleBook}
                             showRuleForm={showRuleForm} ruleBooksFromContainer={ruleBooks}
                             showRules={() => { ruleTabRef.current.click() }}
+                            clearSelection={() => setSelectedRule(null)}
                             showRuleBooks={() => {
                                 ruleBookTabRef.current.click(); setTimeout(() => {
                                     setShowRuleBookForm(false);
